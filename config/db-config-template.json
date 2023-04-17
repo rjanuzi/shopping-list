@@ -1,0 +1,6 @@
+{
+    "host": "<host_address>",
+    "db": "<db_name>",
+    "username": "<username>",
+    "password": "<password>"
+}

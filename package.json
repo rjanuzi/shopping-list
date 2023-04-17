@@ -1,0 +1,28 @@
+{
+  "name": "shopping-list",
+  "version": "1.0.0",
+  "description": "Simpe shopping list app",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rjanuzi/shopping-list.git"
+  },
+  "author": "Rafael B. Januzi (rjanuzi@gmail.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rjanuzi/shopping-list/issues"
+  },
+  "homepage": "https://github.com/rjanuzi/shopping-list#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongodb": "^5.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
