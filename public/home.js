@@ -7,11 +7,11 @@ function genItemHtml(itemData) {
                     class="form-check-input me-1"
                     type="checkbox"
                     value=""
-                    id="firstCheckboxStretched"
+                    id="${itemData.product}_CheckboxStretched"
                 />
                 <label
                     class="form-check-label stretched-link"
-                    for="firstCheckboxStretched"
+                    for="${itemData.product}_CheckboxStretched"
                     ><b>${itemData.amount}${itemData.measure}</b> ${itemData.product}</label
                 >
             </li>
