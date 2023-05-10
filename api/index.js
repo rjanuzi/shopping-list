@@ -13,37 +13,47 @@ app.use(express.static(publicFoder));
 /* Auto convert body to JSON */
 app.use(express.json());
 
+const shoppingListDb = [
+  {
+    id: 1,
+    product: "Arroz",
+    brand: "Broto Legal",
+    measure: "kg",
+    amount: 5,
+    forecasted_price: 8.99,
+    bought: false,
+  },
+  {
+    id: 2,
+    product: "Feijão",
+    brand: "Broto Legal",
+    measure: "kg",
+    amount: 2,
+    forecasted_price: 14.99,
+    bought: true,
+  },
+  {
+    id: 3,
+    product: "Papel Toalha",
+    brand: "Snob",
+    measure: "un",
+    amount: 3,
+    forecasted_price: 5.0,
+    bought: false,
+  },
+  {
+    id: 4,
+    product: "Coxinha de Frango",
+    brand: "Açougue",
+    measure: "kg",
+    amount: 1,
+    forecasted_price: 5.0,
+    bought: true,
+  },
+];
+
 app.get("/shopping-list/:id", (req, res) => {
-  res.status(200).json([
-    {
-      product: "Arroz",
-      brand: "Broto Legal",
-      measure: "kg",
-      amount: 5,
-      forecasted_price: 8.99,
-    },
-    {
-      product: "Feijão",
-      brand: "Broto Legal",
-      measure: "kg",
-      amount: 2,
-      forecasted_price: 14.99,
-    },
-    {
-      product: "Papel Toalha",
-      brand: "Snob",
-      measure: "un",
-      amount: 3,
-      forecasted_price: 5.0,
-    },
-    {
-      product: "Coxinha de Frango",
-      brand: "Açougue",
-      measure: "kg",
-      amount: 1,
-      forecasted_price: 5.0,
-    },
-  ]);
+  res.status(200).json(shoppingListDb);
 });
 
 app.listen(PORT, () => {
