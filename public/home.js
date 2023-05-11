@@ -1,9 +1,19 @@
 const shoppingListElement = document.getElementById("shopping-list");
 
-// TODO - How to make this function available into the HTML to be called by the onclick event?
-function shoppingListClickHandler(event) {
-  const target = event.target;
-  console.log(target);
+/**
+ *
+ * This function handles the click event on the shopping list items. It will communicate with the backend
+ * to keep the sync between the page and the database, marking the item as bought or not.
+ *
+ * @param {Event} e Click event.
+ */
+function shoppingListClickHandler(e) {
+  if (e.target && e.target.matches("input")) {
+    const target = e.target;
+    console.log(target);
+    // TODO: Send the request to the API to update the item
+    // TODO: Update the item at the page
+  }
 }
 
 /**
@@ -14,27 +24,41 @@ function shoppingListClickHandler(event) {
  */
 function genItemHtml(itemData) {
   let html_item = `
-              <li id=${itemData.id} class="list-group-item" onclick="shoppingListClickHandler">
+              <li class="list-group-item">
                   <input
+                      id=${itemData.id}
                       class="form-check-input me-1"
                       type="checkbox"
-                      value=""
-                      id="${itemData.product}_CheckboxStretched"
+                      value="${itemData.id}"
+                      ${itemData.bought ? "checked" : ""}
                   />
                   <label
                       class="form-check-label stretched-link"
-                      for="${itemData.product}_CheckboxStretched"
+                      for="${itemData.id}"
                       >`;
 
   if (itemData.bought) {
-    html_item += `<del><b>${itemData.amount}${itemData.measure}</b></del>`;
+    html_item += `<del><b>${itemData.amount}${itemData.measure}</b>${itemData.product}</label></li></del>`;
   } else {
-    html_item += `<b>${itemData.amount}${itemData.measure}</b>`;
+    html_item += `<b>${itemData.amount}${itemData.measure}</b>${itemData.product}</label></li>`;
   }
 
-  html_item += `${itemData.product}</label></li>`;
-
   return html_item;
+}
+
+function appendShoppingListItem(itemHtml) {
+  /* Create the page element */
+  const range = document.createRange();
+  const documentFragment = range.createContextualFragment(itemHtml);
+
+  /* Add event listener to the element */
+  documentFragment.firstElementChild.addEventListener(
+    "click",
+    shoppingListClickHandler
+  );
+
+  /* Append element to the DOM of the page */
+  shoppingListElement.appendChild(documentFragment);
 }
 
 /**
@@ -56,7 +80,7 @@ function fillShoppingList(shoppingList) {
   shoppingListElement.innerHTML = "";
 
   shoppingList.forEach((listItem) => {
-    shoppingListElement.innerHTML += genItemHtml(listItem);
+    appendShoppingListItem(genItemHtml(listItem));
   });
 }
 
