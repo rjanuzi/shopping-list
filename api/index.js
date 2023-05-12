@@ -30,7 +30,7 @@ const shoppingListDb = [
     measure: "kg",
     amount: 2,
     forecasted_price: 14.99,
-    bought: true,
+    bought: false,
   },
   {
     id: 3,
@@ -48,12 +48,22 @@ const shoppingListDb = [
     measure: "kg",
     amount: 1,
     forecasted_price: 5.0,
-    bought: true,
+    bought: false,
   },
 ];
 
 app.get("/shopping-list/:id", (req, res) => {
   res.status(200).json(shoppingListDb);
+});
+
+app.put("/shopping-list/:id", (req, res) => {
+  for (let i = 0; i < shoppingListDb.length; i++) {
+    if (shoppingListDb[i].id == req.body.id) {
+      shoppingListDb[i].bought = req.body.bought;
+      break;
+    }
+  }
+  res.status(200).json({ message: "Item updated" });
 });
 
 app.listen(PORT, () => {

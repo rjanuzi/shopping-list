@@ -1,4 +1,65 @@
+const SHOPPING_LIST_ITEM_UPDATE_URL = "/shopping-list";
+
 const shoppingListElement = document.getElementById("shopping-list");
+
+/**
+ * This function updates the shopping list component at the page.
+ */
+function updateShoppingList() {
+  getShoppingList().then(fillShoppingList);
+}
+
+/**
+ *
+ * This function updates the view of the shopping list item at the page.
+ *
+ * @param {int} itemId
+ * @param {boolean} isBought
+ */
+function updateShippingListItemView(itemId, isBought) {
+  const itemElement = document.getElementById(itemId);
+  const labelElement = itemElement.nextElementSibling;
+
+  /* Ensure checkbox is correct */
+  itemElement.checked = isBought;
+  if (isBought) {
+    labelElement.innerHTML = `<del><b>${labelElement.innerHTML}</b></del>`;
+  } else {
+    labelElement.innerHTML = labelElement.innerHTML.replace("<del>", "");
+    labelElement.innerHTML = labelElement.innerHTML.replace("</del>", "");
+  }
+}
+
+/**
+ *
+ * This function posts the new status of the shopping list item to the backend API.
+ *
+ * @param {int} itemId
+ * @param {boolean} isBought
+ */
+async function postShippingListItemStatusChange(itemId, isBought) {
+  const url = `${SHOPPING_LIST_ITEM_UPDATE_URL}/${itemId}`;
+  const itemDataJson = JSON.stringify({ id: itemId, bought: isBought });
+
+  fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: itemDataJson,
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error("Failed to update item");
+      }
+    })
+    .catch((error) => {
+      alert(error);
+
+      /* Rollback the view, basically the inverse of the status */
+      updateShippingListItemView(itemId, !isBought);
+    });
+}
 
 /**
  *
@@ -10,9 +71,14 @@ const shoppingListElement = document.getElementById("shopping-list");
 function shoppingListClickHandler(e) {
   if (e.target && e.target.matches("input")) {
     const target = e.target;
-    console.log(target);
-    // TODO: Send the request to the API to update the item
-    // TODO: Update the item at the page
+    const shoppingListItemId = target.value;
+    const isBought = target.checked;
+
+    /* Update the element status in the screen */
+    updateShippingListItemView(shoppingListItemId, isBought);
+
+    /* Update the shipping list item status in the backend */
+    postShippingListItemStatusChange(shoppingListItemId, isBought);
   }
 }
 
@@ -38,9 +104,9 @@ function genItemHtml(itemData) {
                       >`;
 
   if (itemData.bought) {
-    html_item += `<del><b>${itemData.amount}${itemData.measure}</b>${itemData.product}</label></li></del>`;
+    html_item += `<del><b>${itemData.amount}${itemData.measure}</b> ${itemData.product}</label></li></del>`;
   } else {
-    html_item += `<b>${itemData.amount}${itemData.measure}</b>${itemData.product}</label></li>`;
+    html_item += `<b>${itemData.amount}${itemData.measure}</b> ${itemData.product}</label></li>`;
   }
 
   return html_item;
@@ -82,13 +148,6 @@ function fillShoppingList(shoppingList) {
   shoppingList.forEach((listItem) => {
     appendShoppingListItem(genItemHtml(listItem));
   });
-}
-
-/**
- * This function updates the shopping list.
- */
-function updateShoppingList() {
-  getShoppingList().then(fillShoppingList);
 }
 
 /* Update the shipping list at page load */
