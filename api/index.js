@@ -56,6 +56,14 @@ app.get("/shopping-list/:id", (req, res) => {
   res.status(200).json(shoppingListDb);
 });
 
+app.post("/shopping-list", (req, res) => {
+  itemData = req.body;
+  lastId = shoppingListDb[shoppingListDb.length - 1].id;
+  itemData.id = lastId + 1;
+  shoppingListDb.push(itemData);
+  res.status(200).json({ message: "Item added" });
+});
+
 app.put("/shopping-list/:id", (req, res) => {
   for (let i = 0; i < shoppingListDb.length; i++) {
     if (shoppingListDb[i].id == req.body.id) {

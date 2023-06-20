@@ -1,6 +1,9 @@
 const SHOPPING_LIST_ITEM_UPDATE_URL = "/shopping-list";
 
 const shoppingListElement = document.getElementById("shopping-list");
+const addToListModalBtnElement = document.getElementById(
+  "add-to-list-modal-btn"
+);
 
 /**
  * This function updates the shopping list component at the page.
@@ -23,7 +26,7 @@ function updateShippingListItemView(itemId, isBought) {
   /* Ensure checkbox is correct */
   itemElement.checked = isBought;
   if (isBought) {
-    labelElement.innerHTML = `<del><b>${labelElement.innerHTML}</b></del>`;
+    labelElement.innerHTML = `<del>${labelElement.innerHTML}</del>`;
   } else {
     labelElement.innerHTML = labelElement.innerHTML.replace("<del>", "");
     labelElement.innerHTML = labelElement.innerHTML.replace("</del>", "");
@@ -32,10 +35,13 @@ function updateShippingListItemView(itemId, isBought) {
 
 /**
  *
- * This function posts the new status of the shopping list item to the backend API.
+ * This function posts the new status of the shopping list item to the backend API,
+ * if the result is 200, update the item in the VIEW.
  *
  * @param {int} itemId
  * @param {boolean} isBought
+ * @async
+ * @throws {Error} If the API returns a status different than 200.
  */
 async function postShippingListItemStatusChange(itemId, isBought) {
   const url = `${SHOPPING_LIST_ITEM_UPDATE_URL}/${itemId}`;
@@ -149,6 +155,44 @@ function fillShoppingList(shoppingList) {
     appendShoppingListItem(genItemHtml(listItem));
   });
 }
+
+/**
+ * This function posts the new item to the API. If the result is 200
+ * update the items list.
+ *
+ * @param {object} itemData The data of the item to be added.
+ * @async
+ * @throws {Error} If the API returns a status different than 200.
+ */
+async function postNewItem(itemData) {
+  const itemDataJson = JSON.stringify(itemData);
+
+  const response = await fetch("/shopping-list", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: itemDataJson,
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error("Failed to add item");
+      } else {
+        updateShoppingList();
+      }
+    })
+    .catch((error) => {
+      alert(error);
+    });
+}
+
+function addToListBtnHandler(e) {
+  // TODO - Get the modal data and use the postNewItem function to add the item to the list
+  console.log("Save button clicked");
+}
+
+/* Adds the "Add to List" button handler function */
+addToListModalBtnElement.addEventListener("click", addToListBtnHandler);
 
 /* Update the shipping list at page load */
 updateShoppingList();
