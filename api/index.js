@@ -67,10 +67,11 @@ app.post("/shopping-list/:list_id", (req, res) => {
   res.status(200).json({ message: "Item added" });
 });
 
-app.put("/shopping-list/:id", (req, res) => {
-  for (let i = 0; i < shoppingListDb.length; i++) {
-    if (shoppingListDb[i].id == req.body.id) {
-      shoppingListDb[i].bought = req.body.bought;
+app.put("/shopping-list/change-status/:list_id/:item_id", (req, res) => {
+  const shoppingList = shoppingListDb[0];
+  for (let i = 0; i < shoppingList.length; i++) {
+    if (shoppingList[i].id == req.params.item_id) {
+      shoppingList[i].bought = req.body.bought;
       break;
     }
   }

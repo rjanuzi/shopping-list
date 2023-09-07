@@ -1,4 +1,4 @@
-const SHOPPING_LIST_ITEM_UPDATE_URL = "/shopping-list";
+const SHOPPING_LIST_ITEM_UPDATE_URL = "/shopping-list/change-status";
 
 const shoppingListElement = document.getElementById("shoppingList");
 const addToListModalSaveBtn = document.getElementById("addToListModalSaveBtn");
@@ -46,8 +46,8 @@ function updateShippingListItemView(itemId, isBought) {
  * @throws {Error} If the API returns a status different than 200.
  */
 async function postShippingListItemStatusChange(itemId, isBought) {
-  const url = `${SHOPPING_LIST_ITEM_UPDATE_URL}/${itemId}`;
-  const itemDataJson = JSON.stringify({ id: itemId, bought: isBought });
+  const url = `${SHOPPING_LIST_ITEM_UPDATE_URL}/0/${itemId}`;
+  const itemDataJson = JSON.stringify({ bought: isBought });
 
   fetch(url, {
     method: "PUT",
