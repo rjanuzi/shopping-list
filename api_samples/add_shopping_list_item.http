@@ -1,0 +1,9 @@
+POST http://localhost/shopping-list/0 HTTP/1.1
+Content-Type: application/json
+
+{
+    "product": "Carne Bovina",
+    "brand": "Açougue",
+    "measure": "kg",
+    "amount": 1.5
+}

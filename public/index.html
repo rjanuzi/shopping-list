@@ -25,7 +25,7 @@
             type="button"
             class="btn btn-primary"
             data-bs-toggle="modal"
-            data-bs-target="#add-to-list-modal-btn"
+            data-bs-target="#addToListModalBtn"
           >
             Add
           </button>
@@ -34,7 +34,7 @@
     </div>
 
     <div class="container">
-      <ul id="shopping-list" class="list-group">
+      <ul id="shoppingList" class="list-group">
         <!-- Dinamicaly Filled -->
       </ul>
     </div>
@@ -42,7 +42,7 @@
     <!-- Add new modal -->
     <div
       class="modal fade"
-      id="add-to-list-modal-btn"
+      id="addToListModalBtn"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
@@ -58,7 +58,49 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body">...</div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="addFormProductFld">Product</label>
+                <select class="form-control" id="addFormProductFld">
+                  <option></option>
+                  <option>Carne Bovina</option>
+                  <option>Carne Suína</option>
+                  <option>Coca-Cola</option>
+                  <option>Fanta</option>
+                  <option>Doritos</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="addFormBrandFld">Brand</label>
+                <select class="form-control" id="addFormBrandFld">
+                  <option></option>
+                  <option>Açougue</option>
+                  <option>Sadia</option>
+                  <option>Coca-Cola</option>
+                  <option>Elma Chips</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="addFormMeasureFld">Measure</label>
+                <select class="form-control" id="addFormMeasureFld">
+                  <option></option>
+                  <option>Kg</option>
+                  <option>L</option>
+                  <option>Un</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="addFormAmountFld">Amount</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="addFormAmountFld"
+                  placeholder="Enter amount"
+                />
+              </div>
+            </form>
+          </div>
           <div class="modal-footer">
             <button
               type="button"
@@ -68,9 +110,10 @@
               Close
             </button>
             <button
-              id="add-to-list-modal-btn"
+              id="addToListModalSaveBtn"
               type="button"
               class="btn btn-primary"
+              data-bs-dismiss="modal"
             >
               Save changes
             </button>
@@ -79,12 +122,12 @@
       </div>
     </div>
 
-    <script src="home.js" type="module"></script>
-
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
       crossorigin="anonymous"
     ></script>
+
+    <script src="home.js" type="module"></script>
   </body>
 </html>

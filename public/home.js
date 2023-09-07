@@ -1,9 +1,11 @@
 const SHOPPING_LIST_ITEM_UPDATE_URL = "/shopping-list";
 
-const shoppingListElement = document.getElementById("shopping-list");
-const addToListModalBtnElement = document.getElementById(
-  "add-to-list-modal-btn"
-);
+const shoppingListElement = document.getElementById("shoppingList");
+const addToListModalSaveBtn = document.getElementById("addToListModalSaveBtn");
+const addFormProductFld = document.getElementById("addFormProductFld");
+const addFormBrandFld = document.getElementById("addFormBrandFld");
+const addFormMeasureFld = document.getElementById("addFormMeasureFld");
+const addFormAmountFld = document.getElementById("addFormAmountFld");
 
 /**
  * This function updates the shopping list component at the page.
@@ -167,7 +169,7 @@ function fillShoppingList(shoppingList) {
 async function postNewItem(itemData) {
   const itemDataJson = JSON.stringify(itemData);
 
-  const response = await fetch("/shopping-list", {
+  await fetch("/shopping-list/0", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -186,13 +188,18 @@ async function postNewItem(itemData) {
     });
 }
 
-function addToListBtnHandler(e) {
-  // TODO - Get the modal data and use the postNewItem function to add the item to the list
-  console.log("Save button clicked");
+async function addToListBtnHandler(e) {
+  const newItemData = {
+    product: addFormProductFld.value,
+    brand: addFormBrandFld.value,
+    measure: addFormMeasureFld.value,
+    amount: addFormAmountFld.value,
+  };
+  await postNewItem(newItemData);
 }
 
 /* Adds the "Add to List" button handler function */
-addToListModalBtnElement.addEventListener("click", addToListBtnHandler);
+addToListModalSaveBtn.addEventListener("click", addToListBtnHandler);
 
 /* Update the shipping list at page load */
 updateShoppingList();
