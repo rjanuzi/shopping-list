@@ -2,6 +2,9 @@ const SHOPPING_LIST_ITEM_UPDATE_URL = "/shopping-list/change-status";
 
 const shoppingListElement = document.getElementById("shoppingList");
 const addToListModalSaveBtn = document.getElementById("addToListModalSaveBtn");
+const deleteItemConfirmationBtn = document.getElementById(
+  "deleteItemConfirmationBtn"
+);
 const addFormProductFld = document.getElementById("addFormProductFld");
 const addFormBrandFld = document.getElementById("addFormBrandFld");
 const addFormMeasureFld = document.getElementById("addFormMeasureFld");
@@ -90,6 +93,23 @@ function shoppingListClickHandler(e) {
   }
 }
 
+function deleteItemClickHandler(e) {
+  /* Simply add the clicked item ID into the confirmation button ("Yes") of the
+  deletion confirmation modal */
+  if (e.target && e.target.matches("button")) {
+    document.getElementById("deleteItemConfirmationBtn").dataset.itemid =
+      e.target.dataset.itemid;
+  }
+}
+
+function deleteItemConfirmationHandler(e) {
+  console.log(`Delete ${e.target.dataset.itemid}`);
+
+  /* TODO Delete on backend */
+
+  updateShoppingList();
+}
+
 /**
  *
  * This function generates the HTML for the shopping list item to be rendered at the page.
@@ -107,14 +127,31 @@ function genItemHtml(itemData) {
                       ${itemData.bought ? "checked" : ""}
                   />
                   <label
-                      class="form-check-label stretched-link"
+                      class="form-check-label"
                       for="${itemData.id}"
                       >`;
 
   if (itemData.bought) {
-    html_item += `<del><b>${itemData.amount}${itemData.measure}</b> ${itemData.product}</label></li></del>`;
+    html_item += `<del>
+                      <b>${itemData.amount}${itemData.measure}</b> ${itemData.product}</label></del>
+                      <button type="button"
+                        class="btn btn-sm btn-danger"
+                        data-itemid=${itemData.id}
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteItemModal";>
+                        X
+                      </button>
+                    </li>`;
   } else {
-    html_item += `<b>${itemData.amount}${itemData.measure}</b> ${itemData.product}</label></li>`;
+    html_item += `<b>${itemData.amount}${itemData.measure}</b> ${itemData.product}</label>
+                      <button type="button"
+                        class="btn btn-sm btn-danger"
+                        data-itemid=${itemData.id}
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteItemModal";>
+                        X
+                      </button>
+                    </li>`;
   }
 
   return html_item;
@@ -126,10 +163,12 @@ function appendShoppingListItem(itemHtml) {
   const documentFragment = range.createContextualFragment(itemHtml);
 
   /* Add event listener to the element */
-  documentFragment.firstElementChild.addEventListener(
-    "click",
-    shoppingListClickHandler
-  );
+  const listItem = documentFragment.firstElementChild;
+  listItem.addEventListener("click", shoppingListClickHandler);
+
+  /* Add event listener to delete item button */
+  const deleteItemBtn = listItem.getElementsByTagName("button")[0];
+  deleteItemBtn.addEventListener("click", deleteItemClickHandler);
 
   /* Append element to the DOM of the page */
   shoppingListElement.appendChild(documentFragment);
@@ -200,6 +239,12 @@ async function addToListBtnHandler(e) {
 
 /* Adds the "Add to List" button handler function */
 addToListModalSaveBtn.addEventListener("click", addToListBtnHandler);
+
+/* adds the "Delete Item" confirmation button handler function */
+deleteItemConfirmationBtn.addEventListener(
+  "click",
+  deleteItemConfirmationHandler
+);
 
 /* Update the shipping list at page load */
 updateShoppingList();
