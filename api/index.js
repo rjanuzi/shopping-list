@@ -61,10 +61,23 @@ app.get("/shopping-list/:list_id", (req, res) => {
 app.post("/shopping-list/:list_id", (req, res) => {
   const itemData = req.body;
   const shoppingList = shoppingListDb[0];
-  const lastId = shoppingList[shoppingList.length - 1].id;
+  const lastId =
+    shoppingList.length > 0 ? shoppingList[shoppingList.length - 1].id : 1;
   itemData.id = lastId + 1;
   shoppingList.push(itemData);
   res.status(200).json({ message: "Item added" });
+});
+
+app.delete("/shopping-list/:list_id", (req, res) => {
+  const itemId = req.body.itemId;
+  const shoppingList = shoppingListDb[0];
+  const indexToDelete = shoppingList.findIndex((item) => item.id == itemId);
+
+  if (indexToDelete >= 0) {
+    shoppingList.splice(indexToDelete, 1);
+  }
+
+  res.status(200).json({ message: "Item deleted" });
 });
 
 app.put("/shopping-list/change-status/:list_id/:item_id", (req, res) => {

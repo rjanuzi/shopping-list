@@ -103,11 +103,7 @@ function deleteItemClickHandler(e) {
 }
 
 function deleteItemConfirmationHandler(e) {
-  console.log(`Delete ${e.target.dataset.itemid}`);
-
-  /* TODO Delete on backend */
-
-  updateShoppingList();
+  deleteItem(e.target.dataset.itemid);
 }
 
 /**
@@ -218,6 +214,36 @@ async function postNewItem(itemData) {
     .then((response) => {
       if (response.status !== 200) {
         throw new Error("Failed to add item");
+      } else {
+        updateShoppingList();
+      }
+    })
+    .catch((error) => {
+      alert(error);
+    });
+}
+
+/**
+ * This function send a delete request to the API. If the result is 200
+ * then update the items list.
+ *
+ * @param {int} itemId The ID of the item to be deleted
+ * @async
+ * @throws {Error} If the API returns a status different than 200.
+ */
+async function deleteItem(itemId) {
+  const itemDataJson = JSON.stringify({ itemId: itemId });
+
+  await fetch("/shopping-list/0", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: itemDataJson,
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error("Failed to delete item");
       } else {
         updateShoppingList();
       }
