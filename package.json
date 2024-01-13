@@ -13,7 +13,7 @@
     "url": "git+https://github.com/rjanuzi/shopping-list.git"
   },
   "author": "Rafael B. Januzi (rjanuzi@gmail.com)",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/rjanuzi/shopping-list/issues"
   },
